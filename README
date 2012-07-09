@@ -1,0 +1,37 @@
+This Perl script accepts Email messages on STDIN, parses out the
+attachments, and then saves them somewhere.  To use with the 
+Postfix mail server, place the script somehwere and give it
+appropriate permissions to be executed by the Postfix user.  Be
+sure to edit the script itself to change any configuration 
+variables for your system, and make sure that any directories
+it is to write to have the appropriate permissions set.  (For
+Postfix, this is nobody.)
+
+When this is done, add a line like this to your aliases file,
+usually /etc/postfix/aliases:
+
+  script@domain.com:"|/path/to/attachments.pl"
+  
+Then, run newaliases at the commandline.  Note that at this
+time, any email sent to this script will be processed, so
+you might want to make the address something obscure.  To use
+with other mail servers, please see the appropriate documentation.
+
+See this page for the inspiration for this script:
+  http://www.perlmonks.org/?node_id=195442
+
+On Debian, install libmime-perl.  This will install the 
+required Perl modules.
+
+Note that this script includes some safeguards regarding security,
+however at this stage using it in production may not be wise.
+In the future better security measures could be added to, for instnace,
+prevent a malicious user from taking up disk space by mailing too
+many large attachments.  However, for now the ability to whitelist
+Emails and limit the number and size of attachments is provided.
+
+Do NOT run this file as root!
+
+An example whitelist is given, but this can be any file as long as
+the format is one Email address per line.  Edit the script to give
+the location of this file.
